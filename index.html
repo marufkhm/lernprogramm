@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="description" content="Webbasiertes Lernprogramm – HTW Dresden" />
+  <title>Lernprogramm DKU</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="images/icon-192.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vexflow/4.2.2/vexflow.js"></script>
+</head>
+
+<body>
+
+<header>
+  <h1>LERNPROGRAMM</h1>
+</header>
+
+<main id="app">
+
+<!-- REGISTER SCREEN -->
+<section id="screen-register" class="screen active">
+  <div class="auth-card">
+    <div class="auth-switch">
+      <button id="tab-register" class="auth-tab active" type="button">Registrierung</button>
+      <button id="tab-login" class="auth-tab" type="button">Login</button>
+    </div>
+
+    <div id="panel-register" class="auth-panel active">
+      <h2>Registrierung</h2>
+      <p class="auth-text">Erstelle ein Konto, um das Lernprogramm zu nutzen und deine Ergebnisse lokal zu speichern.</p>
+
+      <form id="register-form" class="auth-form" novalidate>
+        <label class="auth-label" for="register-name">Name</label>
+        <input id="register-name" name="name" class="auth-input" type="text" placeholder="Dein Name" required />
+
+        <label class="auth-label" for="register-email">E-Mail</label>
+        <input id="register-email" name="email" class="auth-input" type="email" placeholder="name@example.com" required />
+
+        <label class="auth-label" for="register-password">Passwort</label>
+        <input id="register-password" name="password" class="auth-input" type="password" placeholder="Mindestens 6 Zeichen" minlength="6" required />
+
+        <p id="register-error" class="auth-error" style="display:none;"></p>
+        <button id="btn-register" type="submit">Registrieren</button>
+      </form>
+    </div>
+
+    <div id="panel-login" class="auth-panel">
+      <h2>Login</h2>
+      <p class="auth-text">Melde dich mit deiner E-Mail und deinem Passwort an.</p>
+
+      <form id="login-form" class="auth-form" novalidate>
+        <label class="auth-label" for="login-email">E-Mail</label>
+        <input id="login-email" name="email" class="auth-input" type="email" placeholder="name@example.com" required />
+
+        <label class="auth-label" for="login-password">Passwort</label>
+        <input id="login-password" name="password" class="auth-input" type="password" placeholder="Dein Passwort" required />
+
+        <p id="login-error" class="auth-error" style="display:none;"></p>
+        <button id="btn-login" type="submit">Einloggen</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- START SCREEN -->
+<section id="screen-start" class="screen">
+  <div class="start-top-right">
+    <div class="top-clock-card">
+      <span class="top-clock-label">Zeit</span>
+      <strong id="top-clock-time">00:00</strong>
+      <span id="top-clock-date" class="top-clock-date">--.--.----</span>
+    </div>
+    <aside class="users-panel users-panel-horizontal">
+      <button id="btn-profile" type="button" class="profile-card-link">
+        <img id="profile-chip-image" class="profile-chip-image" src="" alt="Profilbild" />
+        <span class="profile-card-text">
+          <strong>Profil</strong>
+          <span>Studentenkonto</span>
+        </span>
+      </button>
+      <div class="users-inline-card">
+        <span id="users-count" class="users-count">0</span>
+        <span class="users-label">Studenten</span>
+      </div>
+      <button id="btn-logout" type="button" class="logout-icon-btn" aria-label="Abmelden" title="Abmelden">🚪</button>
+    </aside>
+  </div>
+
+  <div class="start-layout">
+    <aside class="planner-panel">
+      <div class="planner-header">
+        <div>
+          <h3>Mein Planer</h3>
+          <p>Plane Aufgaben, Termine und Lernziele fuer heute.</p>
+        </div>
+      </div>
+
+      <form id="planner-form" class="planner-form">
+        <input id="planner-title" class="planner-title-input" type="text" maxlength="80" placeholder="Neue Aufgabe" required />
+        <input id="planner-date" class="planner-date-input" type="date" />
+        <button id="btn-planner-add" type="submit">Aufgabe hinzufuegen</button>
+      </form>
+
+      <p id="planner-status" class="planner-status">Noch keine Aufgaben.</p>
+
+      <div id="planner-list" class="planner-list">
+        <p class="planner-empty">Noch keine Aufgaben. Fuege deine erste Aufgabe hinzu.</p>
+      </div>
+    </aside>
+
+    <div class="quiz-home">
+      <div class="start-topbar">
+        <div>
+          <h2>Kategorie wählen</h2>
+          <p id="welcome-user" class="welcome-user"></p>
+        </div>
+        <div class="start-actions">
+          <a id="btn-univer" href="https://univer.dku.kz/user/login?ReturnUrl=%2f" target="_blank" rel="noopener noreferrer">Univer</a>
+          <a id="btn-zeitplan" href="https://timetable.dku.kz" target="_blank" rel="noopener noreferrer">Zeitplan</a>
+        </div>
+      </div>
+
+      <div class="category-grid">
+        <button class="cat-btn" data-category="web">
+          <span class="cat-icon">🌐</span>
+          <span class="cat-name">Web & Internet</span>
+          <span class="cat-desc">HTTP, HTML, CSS, Protokolle</span>
+          <span class="cat-best" id="best-web">Noch kein Ergebnis</span>
+        </button>
+
+        <button class="cat-btn" data-category="mathe">
+          <span class="cat-icon">📐</span>
+          <span class="cat-name">Mathematik</span>
+          <span class="cat-desc">Formeln und Gleichungen</span>
+          <span class="cat-best" id="best-mathe">Noch kein Ergebnis</span>
+        </button>
+
+        <button class="cat-btn" data-category="noten">
+          <span class="cat-icon">🎵</span>
+          <span class="cat-name">Noten lernen</span>
+          <span class="cat-desc">Noten und Akkorde</span>
+          <span class="cat-best" id="best-noten">Noch kein Ergebnis</span>
+        </button>
+
+        <button class="cat-btn" data-category="extern">
+          <span class="cat-icon">🌍</span>
+          <span class="cat-name">Online-Quiz</span>
+          <span class="cat-desc">Fragen vom externen Server</span>
+          <span class="cat-best" id="best-extern">Noch kein Ergebnis</span>
+        </button>
+      </div>
+
+      <section class="results-insight-card">
+        <div class="results-insight-header">
+          <div>
+            <h3>Lernanalyse</h3>
+            <p>Vergleich deiner besten Ergebnisse in allen 4 Quiz-Kategorien.</p>
+          </div>
+        </div>
+
+        <div id="results-radar-chart" class="results-radar-chart" aria-label="Radar-Diagramm der Quiz-Ergebnisse"></div>
+        <p id="results-analysis" class="results-analysis">Spiele mindestens eine Kategorie, um eine Analyse zu sehen.</p>
+      </section>
+    </div>
+
+    <div class="right-sidebar">
+      <aside class="news-panel">
+        <div class="news-header">
+          <div>
+            <h3>IT-News</h3>
+            <p>Aktuelle Technikthemen aus der Entwicklerwelt.</p>
+          </div>
+        </div>
+
+        <p id="news-status" class="news-status">News werden geladen...</p>
+
+        <div id="news-list" class="news-list">
+          <p class="news-empty">Noch keine News geladen.</p>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROFILE SCREEN -->
+<section id="screen-profile" class="screen">
+  <div class="profile-card">
+    <div class="profile-top">
+      <button id="btn-profile-back" type="button">← Назад</button>
+      <h2>Личный кабинет</h2>
+    </div>
+
+    <div class="profile-content">
+      <div class="profile-photo-block">
+        <img id="profile-image" class="profile-image" src="" alt="Фото студента" />
+        <label for="profile-photo-input" class="profile-upload-label">Загрузить фото</label>
+        <input id="profile-photo-input" type="file" accept="image/*" hidden />
+      </div>
+
+      <form id="profile-form" class="profile-form">
+        <label class="auth-label" for="profile-name">Имя</label>
+        <input id="profile-name" class="auth-input" type="text" maxlength="80" />
+
+        <label class="auth-label" for="profile-email">Почта</label>
+        <input id="profile-email" class="auth-input" type="email" maxlength="120" />
+
+        <p id="profile-status" class="profile-status">Данные профиля загружены.</p>
+
+        <div class="profile-actions">
+          <button id="btn-profile-save" type="submit">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- QUIZ SCREEN -->
+<section id="screen-quiz" class="screen">
+
+  <div class="quiz-header">
+    <button id="btn-back" class="btn-icon">←</button>
+    <span id="quiz-category-label"></span>
+    <span id="quiz-counter">
+      Frage <span id="q-current">1</span> /
+      <span id="q-total">10</span>
+    </span>
+  </div>
+
+  <div class="progress-container">
+    <div id="progress-bar" class="progress-bar"></div>
+  </div>
+
+  <div id="question-area">
+    <div id="question-text"></div>
+    <div id="vexflow-container" style="display:none;"></div>
+  </div>
+
+  <div id="answers-grid"></div>
+
+  <div id="feedback-area" style="display:none;">
+    <p id="feedback-text"></p>
+    <button id="btn-next">Weiter →</button>
+  </div>
+
+  <div id="loading-area" style="display:none;">
+    <p>Frage wird geladen…</p>
+  </div>
+
+</section>
+
+
+<!-- STATS SCREEN -->
+<section id="screen-stats" class="screen">
+
+  <h2>Ergebnis 🏆</h2>
+
+  <div class="stats-card">
+    <div>
+      <span id="stat-correct">0</span> /
+      <span id="stat-total">0</span>
+    </div>
+
+    <div>
+      <span id="stat-percent">0</span>%
+    </div>
+
+    <div id="stat-message"></div>
+
+    <div>
+      ✅ Richtig: <span id="stat-r">0</span>
+      <br>
+      ❌ Falsch: <span id="stat-w">0</span>
+    </div>
+  </div>
+
+  <button id="btn-restart-same">Nochmal</button>
+  <button id="btn-restart-home">Neue Kategorie</button>
+
+</section>
+
+</main>
+
+<footer>
+  <p>PWA Lernprogramm 2026</p>
+  <p>Maruf Kh. & Abylay A.</p>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>
